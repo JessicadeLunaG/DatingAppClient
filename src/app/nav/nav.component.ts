@@ -28,7 +28,6 @@ export class NavComponent implements OnInit {
 
   logout() {
     this.loggedIn =false;
-    console.log("This is a test to commit");
   }
 
 }
