@@ -2,7 +2,8 @@
   <div class="container-fluid">
     <!--Si quitamos el -fluid el texto del nav se centra -->
     <a class="navbar-brand" href="#">Dating App</a>
-    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+    <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="loggedIn">
       <li class="nav-item">
         <a class="nav-link" href="#">Matches</a>
       </li>
@@ -12,15 +13,31 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Messages</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="logout()">Logout</a>
+      </li>
     </ul>
-    <form
-      #loginForm="ngForm"
-      class="d-flex"
-      (ngSubmit)="login()"
-      autocomplete="off"
-    >
-      <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text" placeholder="Username" />
-      <input name="password" [(ngModel)]="model.password" class="form-control me-2" type="password" placeholder="password" />
+    <div class="dropdown" *ngIf="loggedIn">
+      <a class="dropdown-toggle text-light"> Welcome User</a>
+      <div class="dropdown-item">Edit Profile</div>
+      <div class="dropdown-item" (click)="logout()">Logout</div>
+    </div>
+
+    <form *ngIf="!loggedIn" #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off">
+      <input
+        name="username"
+        [(ngModel)]="model.username"
+        class="form-control me-2"
+        type="text"
+        placeholder="Username"
+      />
+      <input
+        name="password"
+        [(ngModel)]="model.password"
+        class="form-control me-2"
+        type="password"
+        placeholder="password"
+      />
       <button class="btn btn-outline-success" type="submit">Login</button>
     </form>
   </div>
