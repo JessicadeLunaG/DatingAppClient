@@ -15,7 +15,7 @@ export class AccountService {
 
   //permite hacer el login
   login(model:any){
-    return this.http.post(this.baseUrl + 'account/login', model).pipe(
+    return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
       map((response:User) => {
         const user = response;
         if(user)
