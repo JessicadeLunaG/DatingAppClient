@@ -10,6 +10,7 @@ export class AccountService {
   baseUrl = 'https://localhost:5001/api/'
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ =  this.currentUserSource.asObservable(); //Se crea un observable
+  
 
   constructor(private http: HttpClient) { }
 
