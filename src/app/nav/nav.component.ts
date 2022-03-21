@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../_models/user';
+import { Router } from '@angular/router';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -10,18 +9,14 @@ import { AccountService } from '../_services/account.service';
 })
 export class NavComponent implements OnInit {
   model: any = {};
- // currentUser$: Observable<User>;
 
-  constructor(public accountService:AccountService) { }
+  constructor(public accountService:AccountService, private router:Router) { }
 
-  ngOnInit(): void {
-   // this.currentUser$ = this.accountService.currentUser$;
-  }
+  ngOnInit(): void {}
 
   login(){
-    this.accountService.login(this.model).subscribe(
-      response => {
-        console.log(response);
+    this.accountService.login(this.model).subscribe(response => {
+        this.router.navigateByUrl('/members');
       }, error => {
         console.log(error)
       }
@@ -30,6 +25,6 @@ export class NavComponent implements OnInit {
 
   logout() {
     this.accountService.logout(); //llamamos al servicio para que haga la llamada
+    this.router.navigateByUrl('/');
   }
-
 }
