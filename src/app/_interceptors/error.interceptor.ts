@@ -25,18 +25,18 @@ export class ErrorInterceptor implements HttpInterceptor {
                 const modelStateErrors = [];
                 for (const key in error.error.errors)
                 {
-                  if(error.error.erros[key])
+                  if(error.error.errors[key])
                   {
-                    modelStateErrors.push(error.error.errors)
+                    modelStateErrors.push(error.error.errors[key])
                   }
                 }
-                throw modelStateErrors;
+                throw modelStateErrors.flat();
               }else {
-                this.toastr.error(error.statusText, error.status);
+                this.toastr.error("Bad request", error.status);//error.statusText, error.status
               }
               break;
             case 401:
-              this.toastr.error(error.statusText, error.status);
+              this.toastr.error("Unauthorized", error.status);//error.statusText, error.status
               break;
             case 404:
               this.router.navigateByUrl('/not-found');
@@ -51,8 +51,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
           }
         }
-        return throwError(error);
-        //throwError(()=>new Error(error));
+        return throwError(()=>new Error(error));
       })
     );
   }
