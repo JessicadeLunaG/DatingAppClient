@@ -38,10 +38,33 @@
                 <div class="card-footer">
                     <div class="btn-group d-flex">
                         <button class="btn btn-primary">Like</button>
-                        <button class="btn btn-primary">Message</button>
+                        <button class="btn btn-success">Message</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div class="col-8">
+        <!-- Template reference variable #memberTabs and onTabActiviated in TS file -->
+        <tabset class="member-tabset" #memberTabs>
+            <tab heading='About {{member.knownAs}}'>
+                <h4>Description</h4>
+                <p>{{member.introduction}}</p>
+                <h4>Looking for</h4>
+                <p>{{member.lookingFor}}</p>
+            </tab>
+            <tab heading='Interests'>
+                <h4>Interests</h4>
+                <p>{{member.interests}}</p>
+            </tab>
+            <tab heading='Photos'>
+                <p>Photos will be here</p>
+            </tab>
+            <tab heading='Messages'>
+                <p>Messages will be here</p>
+            </tab>
+        </tabset>
+    </div>
+
 </div>
