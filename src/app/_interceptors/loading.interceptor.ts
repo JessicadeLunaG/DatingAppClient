@@ -11,14 +11,14 @@ import { BusyService } from '../_services/busy.service';
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
 
-  constructor(private busuService: BusyService) {}
+  constructor(private busyService: BusyService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    this.busuService.busy();
+    this.busyService.busy();
     return next.handle(request).pipe(
       delay(1000),
       finalize(()=> {
-        this.busuService.idle();
+        this.busyService.idle();
       })
     );
   }
