@@ -3,7 +3,7 @@
     <hr>
     <div class="form-group">
         <input 
-        [class.is-valid] = "registerForm.get('username').errors && registerForm.get('username').touched"
+        [class.is-invalid] = "registerForm.get('username').errors && registerForm.get('username').touched"
         type="text" 
         class="form-control" 
         formControlName="username" 
@@ -13,7 +13,7 @@
 
     <div class="form-group mt-2">
         <input 
-        [class.is-valid] = "registerForm.get('password').errors && registerForm.get('password').touched"
+        [class.is-invalid] = "registerForm.get('password').errors && registerForm.get('password').touched"
         type="password" 
         class="form-control" 
         formControlName="password" 
@@ -33,9 +33,18 @@
     </div>
 
     <div class="form-group mt-2">
-        <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Password">
+        <input
+            [class.is-invalid] = "registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').touched"
+            type="password"
+            class="form-control"
+            formControlName="confirmPassword"
+            placeholder="Password">
+        <div *ngIf="registerForm.get('confirmPassword').hasError('required')"
+            class="invalid-feedback">Please enter a confirm password</div>
+        <div *ngIf="registerForm.get('confirmPassword').hasError('isMatching') && !registerForm.get('confirmPassword').hasError('required')"
+            class="invalid-feedback">Confirm password must match password</div>
     </div>
-
+    
     <div class="form-group text-center">
         <button class="btn btn-success me-1 m-1" type="submit"> Register</button>
         <button class="btn btn-default ms-1 m-1" type="button" (click)="cancel()"> Cancel</button>
