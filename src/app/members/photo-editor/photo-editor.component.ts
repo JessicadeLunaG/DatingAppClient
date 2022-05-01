@@ -12,13 +12,13 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./photo-editor.component.css']
 })
 export class PhotoEditorComponent implements OnInit {
-  @Input() member:Member;
+  @Input() member: Member;
   uploader: FileUploader;
-  hasBaseDropzoneOver = false;
+  hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
   user: User;
-  
-  constructor(private accountService: AccountService) {
+
+  constructor(private accountService: AccountService) { 
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
   }
 
@@ -27,10 +27,10 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   fileOverBase(e: any): void{
-    this.hasBaseDropzoneOver = e;
+    this.hasBaseDropZoneOver = e;
   }
 
-  initializeUploader(): void {
+  initializeUploader() {
     this.uploader = new FileUploader({
     url: this.baseUrl + 'users/add-photo',
     authToken: 'Bearer ' + this.user.token,
@@ -42,15 +42,15 @@ export class PhotoEditorComponent implements OnInit {
     });
 
     this.uploader.onAfterAddingFile = (file) => {
-      file.withCredentials = false
-    }
+      file.withCredentials = false;
+    };
 
-    this.uploader.onSuccessItem = (item, response, status. headers) => {
+    this.uploader.onSuccessItem = (item, response, status, headers) => {
       if(response) {
         const photo = JSON.parse(response);
         this.member.photos.push(photo);
       }
-    }
+    };
   }
 
 }
