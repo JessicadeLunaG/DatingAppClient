@@ -18,7 +18,7 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
-import { TextImputComponent } from './_forms/text-imput/text-imput.component';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
@@ -40,7 +40,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    TextImputComponent,
+    TextInputComponent,
     MemberCardComponent,
     MemberEditComponent,
     PhotoEditorComponent
