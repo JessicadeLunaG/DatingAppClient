@@ -2,11 +2,34 @@
     <h2 class="text-center text-primary"> Sign up</h2>
     <hr>
     <div class="form-group">
-        <input type="text" class="form-control" formControlName="username" placeholder="Username">
+        <input 
+        [class.is-valid] = "registerForm.get('username').errors && registerForm.get('username').touched"
+        type="text" 
+        class="form-control" 
+        formControlName="username" 
+        placeholder="Username">
+        <div class="invalid-feedback">Please enter a username</div>
     </div>
 
     <div class="form-group mt-2">
-        <input type="password" class="form-control" formControlName="password" placeholder="Password">
+        <input 
+        [class.is-valid] = "registerForm.get('password').errors && registerForm.get('password').touched"
+        type="password" 
+        class="form-control" 
+        formControlName="password" 
+        placeholder="Password">
+        <div 
+            *ngIf="registerForm.get('password').hasError('required')" 
+            class="invalid-feedback">Please enter a password
+        </div>
+        <div 
+            *ngIf="registerForm.get('password').hasError('minlength')" 
+            class="invalid-feedback">Password too short, at least 4 chars
+        </div>
+        <div 
+            *ngIf="registerForm.get('password').hasError('minlength')" 
+            class="invalid-feedback">Password too long, at most 8 chars
+        </div>
     </div>
 
     <div class="form-group mt-2">
