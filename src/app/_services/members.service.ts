@@ -26,7 +26,7 @@ export class MembersService {
 
   getMember(username:string): Observable<Member>{
     const member = this.members.find(x => x.userName === username);
-    if(member !== undefined) return of(member) 
+    if(member !== undefined) return of(member); 
     return this.http.get<Member>(this.baseUrl + "users/" + username);
   }
 
@@ -39,5 +39,14 @@ export class MembersService {
     );
   }
 
+  setMainPhoto(photoId: number): Observable<Object>
+  {
+    return this.http.put(this.baseUrl + "users/photos/" + photoId, {})
+  }
+
+  deletePhoto(photoId: number): Observable<Object>
+  {
+    return this.http.delete(this.baseUrl + "users/photos/" + photoId);
+  }
 
 }

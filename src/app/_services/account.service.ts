@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, ReplaySubject } from 'rxjs';
+import { map, ReplaySubject, retry } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 
@@ -49,4 +49,5 @@ export class AccountService {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
   }
+
 }
