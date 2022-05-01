@@ -25,6 +25,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
     TabsModule,
     NgxGalleryModule,
     FileUploadModule,
+    BsDatepickerModule
   ]
 })
 export class SharedModule { }
