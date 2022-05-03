@@ -4,6 +4,7 @@ import { map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { PaginateResult } from '../_models/pagination';
+import { UserParams } from '../_models/userParams';
 
 
 @Injectable({
@@ -12,28 +13,41 @@ import { PaginateResult } from '../_models/pagination';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
-  paginatedResult: PaginateResult<Member[]> = new PaginateResult<Member[]>();
 
   constructor(private http: HttpClient) { }
 
-  getMembers(page?: number, itemsPerPage?: number): Observable<PaginateResult<Member[]>>{
+  getMembers(UserParams: UserParams): Observable<PaginateResult<Member[]>>{
+    let params =  this.getPaginationHeaders(UserParams.pageNumber, UserParams.pageSize);
+
+    params = params.append("minAge", UserParams.minAge.toString());
+    params = params.append("maxAge", UserParams.maxAge.toString());
+    params = params.append("gender", UserParams.gender);
+
+    return this.getPaginateResult<Member[]>(this.baseUrl + "users", params);
+  }
+
+  private getPaginateResult<T>(url: string, params: HttpParams): Observable<PaginateResult<T>> {
+    const paginatedResult: PaginateResult<T> = new PaginateResult<T>();
+    
+    return this.http.get<T>(url, { observe: "response", params }).pipe(
+      map(response => {
+        paginatedResult.result = response.body;
+
+        if (response.headers.get("Pagination") !== null) {
+          paginatedResult.pagination = JSON.parse(response.headers.get("Pagination"));
+        }
+        return paginatedResult;
+      })
+    );
+  }
+
+  private getPaginationHeaders(pageNumber: number, pageSize: number){
     let params = new HttpParams();
 
-    if(page !== null && itemsPerPage !== null)
-    {
-      params = params.append("pageNumber", page.toString());
-      params = params.append("pageSize", itemsPerPage.toString());
-    }
-    return this.http.get<Member[]>(this.baseUrl + "users", { observe: "response" , params}).pipe(
-      map(response => {
-        this.paginatedResult.result = response.body;
-        if(response.headers.get("Pagination") !== null) {
-          this.paginatedResult.pagination =  JSON.parse(response.headers.get("Pagination"));
-        }
-        return this.paginatedResult;
-      })
-      
-    );
+    params = params.append("pageNumber", pageNumber.toString());
+    params = params.append("pageSize", pageSize.toString());
+
+    return params;
   }
 
   getMember(username:string): Observable<Member>{
