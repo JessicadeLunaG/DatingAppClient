@@ -13,10 +13,14 @@ import { UserParams } from '../_models/userParams';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
+  memberCache = new Map();
 
   constructor(private http: HttpClient) { }
 
   getMembers(UserParams: UserParams): Observable<PaginateResult<Member[]>>{
+    var response = this.memberCache.get(Object.values(UserParams).join("-"));
+    if(response) return of(response);
+
     let params =  this.getPaginationHeaders(UserParams.pageNumber, UserParams.pageSize);
 
     params = params.append("minAge", UserParams.minAge.toString());
@@ -24,7 +28,11 @@ export class MembersService {
     params = params.append("gender", UserParams.gender);
     params = params.append("orderBy", UserParams.orderBy);
 
-    return this.getPaginateResult<Member[]>(this.baseUrl + "users", params);
+    return this.getPaginateResult<Member[]>(this.baseUrl + "users", params)
+      .pipe(map(response => {
+        this.memberCache.set(Object.values(UserParams).join("-"), response);
+        return response;
+      }))
   }
 
   private getPaginateResult<T>(url: string, params: HttpParams): Observable<PaginateResult<T>> {
@@ -52,8 +60,9 @@ export class MembersService {
   }
 
   getMember(username:string): Observable<Member>{
-    const member = this.members.find(x => x.userName === username);
-    if(member !== undefined) return of(member); 
+    const member = [...this.memberCache.values()];
+    //this.members.find(x => x.userName === username);
+    //if(member !== undefined) return of(member); 
     return this.http.get<Member>(this.baseUrl + "users/" + username);
   }
 
