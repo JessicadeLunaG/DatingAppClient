@@ -109,4 +109,12 @@ export class MembersService {
     return this.http.delete(this.baseUrl + "users/photos/" + photoId);
   }
 
+  addLike(username: string): Observable<Object> {
+    return this.http.post(this.baseUrl + "likes/" + username, {});
+  }
+
+  getLikes(predicate: string): Observable<Partial<Member[]>> {
+    return this.http.get<Partial<Member[]>>(this.baseUrl + "likes?predicate=" + predicate);
+  }
+
 }
