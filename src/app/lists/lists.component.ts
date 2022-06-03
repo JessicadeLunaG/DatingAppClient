@@ -10,26 +10,27 @@ import { MembersService } from '../_services/members.service';
   styleUrls: ['./lists.component.css']
 })
 export class ListsComponent implements OnInit {
+
   members: Partial<Member[]>;
-  predicate = "liked";
+  predicate = "Liked";
   pageNumber = 1;
   pageSize = 5;
   pagination: Pagination;
 
-  constructor(private membersServices: MembersService) { }
+  constructor(private membersService : MembersService) { }
 
   ngOnInit(): void {
     this.loadLikes();
   }
 
-  loadLikes(): void{
-    this.membersServices.getLikes(this.predicate, this.pageNumber, this.pageSize).subscribe((response) => {
-      this.members =  response.result;
+  loadLikes(): void {
+    this.membersService.getLikes(this.predicate, this.pageNumber, this.pageSize).subscribe(response => {
+      this.members = response.result;
       this.pagination = response.pagination;
     })
   }
 
-  pageChaged(event: any): void {
+  pageChanged(event: any): void {
     this.pageNumber = event.page;
     this.loadLikes();
   }

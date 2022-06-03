@@ -11,25 +11,32 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MessagesComponent } from './messages/messages.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
+import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: '', 
+  {
+    path: '',
     runGuardsAndResolvers: 'always',
-    canActivate:[AuthGuard],
-    children:[
+    canActivate: [AuthGuard],
+    children: [
       {path: 'members', component: MemberListComponent},
-      {path: 'members/:username', component: MemberDetailComponent},
-      {path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
+      {path: 'members/:username',component:MemberDetailComponent, resolve: {member: MemberDetailResolver}},
+      {path: 'member/edit',component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},
-      
     ]
   },
-  {path: 'errors', component: TestErrorsComponent},
-  {path: 'not-found', component: NotFoundComponent},
-  {path: 'server-error', component: ServerErrorComponent},
-  {path: '**', component: HomeComponent, pathMatch:'full'},
+  {
+    path: 'errors', component: TestErrorsComponent
+  },
+  {
+    path: 'not-found', component: NotFoundComponent
+  },
+  {
+    path: 'server-error', component: ServerErrorComponent
+  },
+  {path: '**', component: NotFoundComponent, pathMatch: 'full'}
 ];
 
 @NgModule({
