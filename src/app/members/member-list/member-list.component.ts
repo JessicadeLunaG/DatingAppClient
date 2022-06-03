@@ -10,17 +10,18 @@ import { MembersService } from 'src/app/_services/members.service';
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
-  styleUrls: ['./member-list.component.css']
+  styleUrls: ['./member-list.component.css'],
 })
 export class MemberListComponent implements OnInit {
   members: Member[];
   pagination: Pagination;
   userParams: UserParams;
   user: User;
-  genderList = [{value: "female", display: "Females"}, {value: "male", display: "Males"}]
+  genderList = [{value: "female", display: "Females"}, {value: "male", display: "Males"}];
 
-  constructor(private membersService: MembersService, private accountService: AccountService) { 
-    this.userParams = this.membersService.getUserParams();
+
+  constructor(private memberService: MembersService,) { 
+    this.userParams = this.memberService.getUserParams();
   }
 
   ngOnInit(): void {
@@ -28,21 +29,24 @@ export class MemberListComponent implements OnInit {
   }
 
   loadMembers(){
-    this.membersService.setUserParams(this.userParams);
-    this.membersService.getMembers(this.userParams).subscribe(response => {
-      this.members =  response.result;
-      this.pagination =  response.pagination;
-    })
+    this.memberService.setUserParams(this.userParams);
+    this.memberService.getMembers(this.userParams).subscribe(
+      response =>{
+        this.members = response.result;
+        this.pagination = response.pagination;
+      }
+    );
   }
 
-  pageChanged(event: any): void {
+  pageChanged(event: any):void{
     this.userParams.pageNumber = event.page;
-    this.membersService.setUserParams(this.userParams);
+    this.memberService.setUserParams(this.userParams);
     this.loadMembers();
   }
 
-  resetFilters(){
-    this.userParams = this.membersService.resetUserParams();
+  resetFilters() {
+    this.userParams = this.memberService.resetUserParams();
     this.loadMembers();
   }
+
 }
