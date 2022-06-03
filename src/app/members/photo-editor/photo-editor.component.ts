@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { take } from 'rxjs';
 import { Member } from 'src/app/_models/member';
-import { Photo } from 'src/app/_models/photo';
+import { Photo } from 'src/app/_models/photos';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { MembersService } from 'src/app/_services/members.service';
@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() member: Member;
-  uploader : FileUploader;
+  uploader: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
   user: User;
@@ -25,14 +25,14 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initializeUploader();
+    this.initializeFileUploader();
   }
 
-  fileOverBase(e: any): void{
+  fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
   }
 
-  initializeUploader() {
+  initializeFileUploader(){
     this.uploader = new FileUploader({
       url: this.baseUrl + 'users/add-photo',
       authToken: 'Bearer ' + this.user.token,
@@ -42,18 +42,17 @@ export class PhotoEditorComponent implements OnInit {
       autoUpload: false,
       maxFileSize: 10 * 1024 * 1024
     });
-    
+
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
     }
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
-      if(response) {
+      if(response){
         const photo: Photo = JSON.parse(response);
         this.member.photos.push(photo);
-        if(photo.isMain)
-        {
-          this.user.photoUrl = photo.url;
+        if(photo.isMain){
+          this.user.photoUrl=photo.url;
           this.member.photoUrl = photo.url;
           this.accountService.setCurrentUser(this.user);
         }
@@ -61,7 +60,7 @@ export class PhotoEditorComponent implements OnInit {
     }
   }
 
-  setMainPhoto(photo: Photo): void {
+  setMainPhoto(photo: Photo): void{
     this.membersService.setMainPhoto(photo.id).subscribe(() => {
       this.user.photoUrl = photo.url;
       this.accountService.setCurrentUser(this.user);
